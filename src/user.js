@@ -6,8 +6,8 @@ import 'whatwg-fetch';
 import { Provider } from 'react-redux';
 import ReduxToastr from 'react-redux-toastr';
 import LoadingBar from 'react-redux-loading-bar';
-
-import Home from './components/home';
+import Message from './components/message';
+import UserProfile from './components/userProfile';
 
 import configureStore from './store/configureStore';
 import '../styles/main.scss';
@@ -19,7 +19,8 @@ const Root = () => (
   <Provider store={store}>
     <div>
       <LoadingBar className="loading-bar" />
-      <Home />
+      <Message />
+      <UserProfile />
     </div>
   </Provider>
 );

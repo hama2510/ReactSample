@@ -14,7 +14,8 @@ module.exports = {
   output: {
     path: __dirname + '/dist',
     publicPath: '/js',
-    filename: '[name].bundle.js'
+    filename: '[name].bundle.js',
+    chunkFilename: '[id].bundle_[chunkhash].js'
   },
   plugins: [
     new HtmlWebpackPlugin({
