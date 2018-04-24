@@ -1,8 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Modal from 'react-modal';
-
-import { init, getTours, login, getCurrentUser, logout } from 'actions/homeActions';
+import { toastr } from 'react-redux-toastr';
+import { getTours } from 'actions/tourActions';
+import { bookTour } from 'actions/userActions';
 import TopMenu from './topMenu';
 
 class Home extends React.Component {
@@ -11,13 +12,19 @@ class Home extends React.Component {
     super();
   }
 
-  componentDidMount() {
-    // this.props.init();
-  }
-
   componentWillReceiveProps(newProps) {
     if (newProps.token !== this.props.token) {
       this.props.getTours();
+    }
+  }
+
+  bookTour(id){
+    console.log(id);
+    const user = sessionStorage.getItem('user');
+    if(user){
+      this.props.bookTour(id);
+    }else{
+      toastr.error('Thông báo', 'Vui lòng đăng nhập!');
     }
   }
 
@@ -39,15 +46,18 @@ class Home extends React.Component {
                 <p className="card-text">
                 {props.tour.description}
                 </p>
-                <a href="#" className="btn btn-primary">Đặt tour</a>
+                <a href="javascript:;" className="btn btn-primary" 
+                onClick={() => props.bookTour(props.tour.id)}>
+                  Đặt tour
+                </a>
               </div>
             </div>
         </div>
       );
     };
 
-    const tours = this.props.tours.map((tour)=>
-      <Tour tour={tour} key={tour.id} />
+    const tours = this.props.tours.map((tour, index)=>
+      <Tour tour={tour} key={tour.id} index={index} bookTour={this.bookTour.bind(this)} />
     );
     const { user } = this.props;
     return (
@@ -72,5 +82,5 @@ const mapStateToProps = (state) => {
 
 export default connect(
   mapStateToProps,
-  { init, getTours }
+  { getTours, bookTour }
 )(Home);

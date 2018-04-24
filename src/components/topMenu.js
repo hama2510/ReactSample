@@ -2,26 +2,31 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Modal from 'react-modal';
 
-import { init, login, getCurrentUser, logout } from 'actions/homeActions';
+import { init, login, getCurrentUser, logout, deposit } from 'actions/userActions';
 
 class TopMenu extends React.Component {
 
   constructor() {
     super();
     this.state = {
-      modalIsOpen: false,
-      username: '',
-      password: ''
+      logginModalIsOpen: false,
+      depositModalIsOpen: false,
     };
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
+    this.openDepositModal = this.openDepositModal.bind(this);
+    this.closeDepositModal = this.closeDepositModal.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.login = this.login.bind(this);
     this.logout= this.logout.bind(this);
+    this.deposit= this.deposit.bind(this);
   }
 
   componentDidMount() {
     this.props.init();
+    if(this.props.token){
+      this.props.getCurrentUser();
+    }
   }
 
   componentWillReceiveProps(newProps) {
@@ -34,20 +39,35 @@ class TopMenu extends React.Component {
   }
 
   openModal() {
-    this.setState({modalIsOpen: true});
-    console.log(this.state);
+    this.setState({logginModalIsOpen: true});
   }
 
   closeModal() {
-    this.setState({modalIsOpen: false});
+    this.setState({logginModalIsOpen: false});
+  }
+
+  openDepositModal() {
+    this.setState({depositModalIsOpen: true});
+  }
+
+  closeDepositModal() {
+    this.setState({depositModalIsOpen: false});
+  }
+
+  deposit(){
+    const code = document.getElementById('cardCode').value;
+    this.props.deposit(code);
   }
 
   login(){
-    this.props.login(this.state.username, this.state.password);
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value
+    this.props.login(username, password);
   }
 
   logout(){
     this.props.logout();
+    window.location.replace('/');
   }
   
   handleChange(e) {
@@ -67,7 +87,6 @@ class TopMenu extends React.Component {
       }
     };
     
-    const { username, password } = this.state;
     const { user } = this.props;
     let loggedIn = false;
     if(user){
@@ -76,7 +95,7 @@ class TopMenu extends React.Component {
     return (
       <div>
         <Modal
-          isOpen={this.state.modalIsOpen}
+          isOpen={this.state.logginModalIsOpen}
           onRequestClose={this.closeModal}
           style={modalStyles}
           shouldCloseOnOverlayClick={true}>
@@ -85,14 +104,29 @@ class TopMenu extends React.Component {
             <div className="form-group">
               <label htmlFor="username">Tên đăng nhập</label>
               <input type="text" className="form-control" id="username" 
-              value={username} placeholder="Tên đăng nhập" onChange={this.handleChange}/>
+              placeholder="Tên đăng nhập" />
             </div>
             <div className="form-group">
               <label htmlFor="password">Mật khẩu</label>
               <input type="password" className="form-control" id="password"
-               value={password} placeholder="Mật khẩu" onChange={this.handleChange} />
+               placeholder="Mật khẩu"  />
             </div>
             <button className="btn btn-primary" onClick={this.login}>Đăng nhập</button>
+          </div>
+        </Modal>
+        <Modal
+          isOpen={this.state.depositModalIsOpen}
+          onRequestClose={this.closeDepositModal}
+          style={modalStyles}
+          shouldCloseOnOverlayClick={true}>
+          <h2>Nạp thẻ</h2>
+          <div>
+            <div className="form-group">
+              <label htmlFor="cardCode">Mã thẻ</label>
+              <input type="text" className="form-control" id="cardCode" 
+               placeholder="Mã thẻ" onChange={this.handleChange}/>
+            </div>
+            <button className="btn btn-primary" onClick={this.deposit}>Nạp thẻ</button>
           </div>
         </Modal>
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -104,7 +138,10 @@ class TopMenu extends React.Component {
             <div className="navbar-nav">
             <a className="nav-item nav-link active" href="/">Trang chủ <span className="sr-only">(current)</span></a>
             { loggedIn &&
-            <a className="nav-item nav-link active" href="/user.html">Thông tin cá nhân</a>
+            <a className="nav-item nav-link" href="/user.html">Thông tin cá nhân</a>
+            }
+            { loggedIn &&
+            <a className="nav-item nav-link" href="javascript:;" onClick={this.openDepositModal}>Nạp tiền</a>
             }
             </div>
           </div>
@@ -137,5 +174,5 @@ const mapStateToProps = (state) => {
 
 export default connect(
   mapStateToProps,
-  { init, login, getCurrentUser, logout }
+  { init, login, getCurrentUser, logout, deposit }
 )( TopMenu );

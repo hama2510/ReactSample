@@ -2,17 +2,15 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Modal from 'react-modal';
 
-import { init, getTours, login, getCurrentUser, logout } from 'actions/homeActions';
 import TopMenu from './topMenu';
 
 class UserProfile extends React.Component {
 
-  constructor() {
-    super();
-  }
-
   componentDidMount() {
-    
+    const user = sessionStorage.getItem('user');
+    if(!user){
+      window.location.replace('/');
+    }
   }
 
   componentWillReceiveProps(newProps) {
@@ -107,5 +105,5 @@ const mapStateToProps = (state) => {
 
 export default connect(
   mapStateToProps,
-  { init, getCurrentUser }
+  { }
 )(UserProfile);
