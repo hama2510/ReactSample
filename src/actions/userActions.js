@@ -168,3 +168,36 @@ export const deposit = (card) => (dispatch, getState) => {
     });
   }
 };
+
+export const register = (regUser) => (dispatch, getState) => {
+  dispatch(showLoading());
+  fetch(`${REQUEST_URL}/users`, {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'X-K-APP-TOKEN': getState().storeState.token
+    },
+    body: JSON.stringify(regUser)
+  })
+    .then(res => {
+      dispatch(hideLoading());
+      if (res.ok) {
+        dispatch({
+          type: actionTypes.RECEIVE_MESSAGE,
+          message: {
+            content: 'Đăng ký thành công, vui lòng đăng nhập',
+            type: SUCCESS,
+          }
+        });
+      }else{
+        dispatch({
+          type: actionTypes.RECEIVE_MESSAGE,
+          message: {
+            content: 'Đăng ký thất bại',
+            type: ERROR,
+          }
+        });
+      }
+    })
+};

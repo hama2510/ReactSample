@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Modal from 'react-modal';
 
-import { init, login, getCurrentUser, logout, deposit } from 'actions/userActions';
+import { init, login, getCurrentUser, logout, deposit, register } from 'actions/userActions';
 
 class TopMenu extends React.Component {
 
@@ -11,15 +11,19 @@ class TopMenu extends React.Component {
     this.state = {
       logginModalIsOpen: false,
       depositModalIsOpen: false,
+      registerModalIsOpen: false
     };
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.openDepositModal = this.openDepositModal.bind(this);
     this.closeDepositModal = this.closeDepositModal.bind(this);
+    this.openRegisterModal = this.openRegisterModal.bind(this);
+    this.closeRegisterModal = this.closeRegisterModal.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.login = this.login.bind(this);
     this.logout= this.logout.bind(this);
     this.deposit= this.deposit.bind(this);
+    this.register = this.register.bind(this);
   }
 
   componentDidMount() {
@@ -54,6 +58,33 @@ class TopMenu extends React.Component {
     this.setState({depositModalIsOpen: false});
   }
 
+  openRegisterModal() {
+    this.setState({registerModalIsOpen: true});
+  }
+
+  closeRegisterModal() {
+    this.setState({registerModalIsOpen: false});
+  }
+
+  register(){
+    const username = document.getElementById('reg_username').value;
+    const password = document.getElementById('reg_password').value;
+    const confirm = document.getElementById('reg_confirm_password').value;
+    const name = document.getElementById('reg_name').value;
+    const email = document.getElementById('reg_email').value;
+    const phone = document.getElementById('reg_phone').value;
+    if(password===confirm){
+      const regUser = {
+        username,
+        password,
+        name,
+        email,
+        phone
+      };
+      this.props.register(regUser);
+    }
+  }
+
   deposit(){
     const code = document.getElementById('cardCode').value;
     this.props.deposit(code);
@@ -86,7 +117,16 @@ class TopMenu extends React.Component {
         transform             : 'translate(-50%, -50%)'
       }
     };
-    
+    const registerModalStyles = {
+      content : {
+        width                 : '800px',
+        top                   : '50%',
+        left                  : '50%',
+        right                 : 'auto',
+        bottom                : 'auto',
+        transform             : 'translate(-50%, -50%)'
+      }
+    };
     const { user } = this.props;
     let loggedIn = false;
     if(user){
@@ -129,6 +169,50 @@ class TopMenu extends React.Component {
             <button className="btn btn-primary" onClick={this.deposit}>Nạp thẻ</button>
           </div>
         </Modal>
+        <Modal
+          isOpen={this.state.registerModalIsOpen}
+          onRequestClose={this.closeRegisterModal}
+          style={registerModalStyles}
+          shouldCloseOnOverlayClick={true}>
+          <div className="row">
+            <h2 className="col-md-12">Đăng ký thành viên</h2>
+            <div className="col-md-6">
+              <div className="form-group">
+                  <label htmlFor="username">Tên đăng nhập</label>
+                  <input type="text" className="form-control" id="reg_username" 
+                  placeholder="Tên đăng nhập" />
+              </div>
+              <div className="form-group">
+                <label htmlFor="password">Mật khẩu</label>
+                <input type="password" className="form-control" id="reg_password"
+                placeholder="Mật khẩu"  />
+              </div>
+              <div className="form-group">
+                <label htmlFor="password">Xác nhận lại mật khẩu</label>
+                <input type="password" className="form-control" id="reg_confirm_password"
+                placeholder="Xác nhận lại mật khẩu"  />
+              </div>
+            </div>
+            <div className="col-md-6">
+                <div className="form-group">
+                  <label htmlFor="password">Họ và tên</label>
+                  <input type="password" className="form-control" id="reg_name"
+                  placeholder="Họ và tên"  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="password">Email</label>
+                  <input type="email" className="form-control" id="reg_email"
+                  placeholder="Email"  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="password">Số điện thoại</label>
+                  <input type="text" className="form-control" id="reg_phone"
+                  placeholder="Số điện thoại"  />
+                </div>
+                <button className="btn btn-primary" onClick={this.register}>Đăng ký</button>
+            </div>
+          </div>
+        </Modal>
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
           <a className="navbar-brand" href="#">K Tour</a>
           <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -149,7 +233,7 @@ class TopMenu extends React.Component {
           { !loggedIn &&
             <div className="navbar-nav">
               <a className="nav-item nav-link" href="javascript:;" onClick={this.openModal}>Đăng nhập</a>
-              <a className="nav-item nav-link" href="#">Đăng ký</a>
+              <a className="nav-item nav-link" href="javascript:;" onClick={this.openRegisterModal}>Đăng ký</a>
             </div>
 
           }
@@ -174,5 +258,5 @@ const mapStateToProps = (state) => {
 
 export default connect(
   mapStateToProps,
-  { init, login, getCurrentUser, logout, deposit }
+  { init, login, getCurrentUser, logout, deposit, register }
 )( TopMenu );

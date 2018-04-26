@@ -1,8 +1,8 @@
 module.exports = {
-  entry: [
-    './src/main.js',
-    './src/user.js'
-  ],
+  entry: {
+    'main': './src/main.js',
+    'user': './src/user.js'
+  },
   resolve: {
     modules: [
       __dirname + '/src',
@@ -10,7 +10,7 @@ module.exports = {
     ]
   },
   output: {
-    path: __dirname + '/../src/main/webapp/resources/js',
+    path: __dirname + '/../',
     publicPath: '/js',
     filename: '[name].bundle.js'
   },
