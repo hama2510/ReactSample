@@ -18,6 +18,9 @@ class UserProfile extends React.Component {
   }
 
   render() {
+    const tabStyle = {
+      padding: '10px'
+    }
     function Tour(props){
       return (
         <tr>
@@ -55,7 +58,7 @@ class UserProfile extends React.Component {
           </nav>
           <div className="tab-content" id="nav-tabContent">
             <div className="tab-pane fade show active" id="nav-profile" 
-            role="tabpanel" aria-labelledby="nav-home-tab">
+            role="tabpanel" aria-labelledby="nav-home-tab" style={tabStyle}>
                   <div className="row">
                     <div className="col-md-2">Tên</div>
                     <div className="col-md-9">{user.name}</div>
@@ -74,7 +77,7 @@ class UserProfile extends React.Component {
                   </div>
             </div>
             <div className="tab-pane fade" id="nav-tours" role="tabpanel" aria-labelledby="nav-profile-tab">
-              <table className="table table-striped">
+              <table className="table table-striped" style={tabStyle}>
                 <thead>
                   <tr>
                     <th scope="col">#</th>

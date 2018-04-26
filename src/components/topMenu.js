@@ -198,7 +198,7 @@ class TopMenu extends React.Component {
             <div className="col-md-6">
                 <div className="form-group">
                   <label htmlFor="password">Họ và tên</label>
-                  <input type="password" className="form-control" id="reg_name"
+                  <input type="text" className="form-control" id="reg_name"
                   placeholder="Họ và tên"  />
                 </div>
                 <div className="form-group">

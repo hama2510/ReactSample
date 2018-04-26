@@ -1,4 +1,7 @@
 export const GET_TOURS = 'GET_TOURS';
+
+export const GET_LOCATIONS = 'GET_LOCATIONS';
+
 export const LOGIN = 'LOGIN';
 export const INIT = 'INIT';
 export const GET_CURRENT_USER = 'GET_CURRENT_USER';

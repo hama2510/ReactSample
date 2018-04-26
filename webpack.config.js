@@ -3,7 +3,8 @@ module.exports = {
   devtool: 'cheap-module-eval-source-map',
   entry: {
     'main': './src/main.js',
-    'user': './src/user.js'
+    'user': './src/user.js',
+    'admin': './src/admin.js'
   },
   resolve: {
     modules: [
@@ -30,7 +31,12 @@ module.exports = {
       title: 'User page',
       filename: 'user.html'
     }),
-    
+    new HtmlWebpackPlugin({
+      inject: false,
+      chunks: ['admin'],
+      title: 'Admin page',
+      filename: 'admin.html'
+    })
   ],
   devServer: {
     contentBase: './dist',

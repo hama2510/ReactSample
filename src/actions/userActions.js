@@ -2,7 +2,6 @@ import * as actionTypes from 'constants/actionTypes';
 import { showLoading, hideLoading } from 'react-redux-loading-bar';
 import { REQUEST_URL } from 'constants/config';
 import { SUCCESS, ERROR } from 'constants/messageConstant';
-import { throws } from 'assert';
 
 export const init = () => (dispatch) => {
     // const token = sessionStorage.getItem('token');
@@ -204,3 +203,4 @@ export const register = (regUser) => (dispatch, getState) => {
       }
     })
 };
+

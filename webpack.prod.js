@@ -1,7 +1,8 @@
 module.exports = {
   entry: {
     'main': './src/main.js',
-    'user': './src/user.js'
+    'user': './src/user.js',
+    'admin': './src/admin.js'
   },
   resolve: {
     modules: [

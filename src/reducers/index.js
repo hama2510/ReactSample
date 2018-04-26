@@ -4,6 +4,7 @@ const initState = {
   token: null,
   user: null,
   tours:[],
+  locations: [],
   message: {
     title: '',
     content: '',
@@ -27,6 +28,11 @@ export default (state = initState, action) => {
       return {
         ...state,
         tours: action.tours
+      };
+    case actionTypes.GET_LOCATIONS:
+      return {
+        ...state,
+        locations: action.locations
       };
     case actionTypes.LOGIN:
       return {

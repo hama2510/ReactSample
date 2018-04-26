@@ -33,7 +33,9 @@ class Home extends React.Component {
       marginTop: '10px',
       marginBottom: '10px'
     }
-  
+    const containerStyle = {
+      padding: '10px'
+    }
     function Tour(props){
       return (
         <div className="col-md-4" style={itemStyle}>
@@ -64,7 +66,7 @@ class Home extends React.Component {
       <div>
         <TopMenu />
         <br/>
-        <div className="row">
+        <div className="row" style={containerStyle}>
          {tours}
         </div>
       </div>
