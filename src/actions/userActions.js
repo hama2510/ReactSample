@@ -2,6 +2,7 @@ import * as actionTypes from 'constants/actionTypes';
 import { showLoading, hideLoading } from 'react-redux-loading-bar';
 import { REQUEST_URL } from 'constants/config';
 import { SUCCESS, ERROR } from 'constants/messageConstant';
+import { throws } from 'assert';
 
 export const init = () => (dispatch) => {
     // const token = sessionStorage.getItem('token');
@@ -22,19 +23,19 @@ export const getCurrentUser = () => (dispatch, getState) => {
         'X-K-APP-TOKEN': getState().storeState.token
       }
     })
-      .then(res => {
-        dispatch(hideLoading());
-        if (res.ok) {
-          return res.json();
-        }
-        throw new Error(res.statusText);
-      })
-      .then(user => {
-        dispatch({
-          type: actionTypes.GET_CURRENT_USER,
-          user,
-        });
+    .then(res => {
+      dispatch(hideLoading());
+      if (res.ok) {
+        return res.json();
+      }
+      throw new Error(res.statusText);
+    })
+    .then(user => {
+      dispatch({
+        type: actionTypes.GET_CURRENT_USER,
+        user,
       });
+    });
   }
 };
 
@@ -63,15 +64,17 @@ export const login = (username, password) => (dispatch, getState) => {
             type: SUCCESS,
           }
         });
-        return res.json();
+        return res.json();      
+      }else{
+        dispatch({
+          type: actionTypes.RECEIVE_MESSAGE,
+          message: {
+            content: 'Đăng nhập thất bại',
+            type: ERROR,
+          }
+        });
+        throw new Error(res.statusText);
       }
-      dispatch({
-        type: actionTypes.RECEIVE_MESSAGE,
-        message: {
-          content: 'Đăng nhập thất bại',
-          type: ERROR,
-        }
-      });
     })
     .then(user => {
       sessionStorage.setItem('user', user.id);

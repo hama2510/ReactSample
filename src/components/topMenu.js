@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Modal from 'react-modal';
-
+import { toastr } from 'react-redux-toastr';
 import { init, login, getCurrentUser, logout, deposit, register } from 'actions/userActions';
 
 class TopMenu extends React.Component {
@@ -82,6 +82,8 @@ class TopMenu extends React.Component {
         phone
       };
       this.props.register(regUser);
+    } else{
+      toastr.error('Thông báo', 'Mật khẩu không trùng khớp');
     }
   }
 
@@ -185,12 +187,12 @@ class TopMenu extends React.Component {
               <div className="form-group">
                 <label htmlFor="password">Mật khẩu</label>
                 <input type="password" className="form-control" id="reg_password"
-                placeholder="Mật khẩu"  />
+                placeholder="Mật khẩu" required="true" />
               </div>
               <div className="form-group">
                 <label htmlFor="password">Xác nhận lại mật khẩu</label>
                 <input type="password" className="form-control" id="reg_confirm_password"
-                placeholder="Xác nhận lại mật khẩu"  />
+                placeholder="Xác nhận lại mật khẩu" required />
               </div>
             </div>
             <div className="col-md-6">
@@ -209,8 +211,10 @@ class TopMenu extends React.Component {
                   <input type="text" className="form-control" id="reg_phone"
                   placeholder="Số điện thoại"  />
                 </div>
-                <button className="btn btn-primary" onClick={this.register}>Đăng ký</button>
             </div>
+            <div className="col-md-12 text-center">
+              <button className="btn btn-primary" onClick={this.register}>Đăng ký</button>       
+            </div>     
           </div>
         </Modal>
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
